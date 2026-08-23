@@ -1,0 +1,4 @@
+interface:
+  display_name: "Liquid Glass Design"
+  short_description: "Plan Apple-inspired UI, then implement four-layer SVG glass"
+  default_prompt: "Use $liquid-glass to write a compact design brief with purpose, visual direction, differentiation, hierarchy, interaction states, motion, typography, and accessibility using Apple-inspired and frontend-design principles, then implement only the reference four-layer liquid glass style with SVG displacement, SVG masks, 2px cover blur, sharp rim lighting, and reflective inset shadows."
