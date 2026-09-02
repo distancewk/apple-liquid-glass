@@ -1,12 +1,50 @@
 # Apple Liquid Glass
 
-一个让 AI 能独立设计并实现 Apple 风格 Web 页面的 Skill。
-
-它把两件通常被混在一起的事明确拆开：先用 Apple HIG 判断页面应当解决什么、控件怎样分组、色彩怎样承担语义；再用固定的 SVG 四层液态玻璃结构实现浮动的功能控件。结果不是“给所有卡片加模糊”，而是让玻璃只在需要建立层级、导航或即时操作的地方出现。
+一个让 Codex 设计并实现 Apple 风格 Web 页面的 Skill。
 
 > Apple HIG 决定页面为什么这样设计；Liquid Glass 结构决定材质怎样真实地工作。
 
-## 适用场景
+它不是“给所有卡片加模糊”的 glassmorphism：Apple HIG 用来判断页面目的、控件分组与颜色语义；固定 SVG 四层结构只实现真正浮在内容之上的功能控件。
+
+## 30 秒快速使用
+
+### 1. 安装到 Codex
+
+首次安装：
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/distancewk/apple-liquid-glass.git ~/.codex/skills/apple-liquid-glass
+```
+
+已经安装过时更新：
+
+```bash
+cd ~/.codex/skills/apple-liquid-glass
+git pull
+```
+
+安装或更新后，新建一个 Codex 任务，让它重新发现 Skill。
+
+### 2. 直接发出设计请求
+
+```text
+使用 $apple-liquid-glass 设计一个旅行规划页面。
+先完成一个可交互的高保真预览；我要确认液态玻璃效果后，再扩展完整页面。
+```
+
+Skill 会先交付一个代表性切片，而不是一次生成整页：背景应透过玻璃变化，控件应有真实按下/焦点状态，并在确认后再扩展内容。
+
+### 3. 运行仓库中的案例
+
+```bash
+cd ~/.codex/skills/apple-liquid-glass
+python3 -m http.server 4173
+```
+
+然后打开 `http://localhost:4173/examples/01-trail-guide.html`。另外两个案例分别是 `02-focus-session.html` 和 `03-privacy-overview.html`。
+
+## 它适合做什么
 
 - 需要 Apple 式克制、清晰层级和自然交互的 Web 页面
 - 工具栏、底部导航、浮动操作、媒体导览等需要透出背景的功能控件
@@ -14,7 +52,15 @@
 
 不适用于把每个内容卡片、输入框和按钮都做成玻璃，或把 Apple 的截图、资产、商标直接复制到网页中。
 
-## 设计与实现架构
+## 三个案例，一种材质合同
+
+| 案例 | 验证重点 | 直接打开 |
+| --- | --- | --- |
+| 山野导览 | 粘性玻璃工具栏随滚动透出变化的山景 | [运行](examples/01-trail-guide.html) |
+| 专注计时 | 圆形玻璃控制器与非卡片式场景 | [运行](examples/02-focus-session.html) |
+| 隐私概览 | 普通信息分组与底部共享玻璃导航分层 | [运行](examples/03-privacy-overview.html) |
+
+## 工作原理
 
 ```text
 用户任务与产品约束
@@ -138,12 +184,9 @@ Skill 默认先生成一个高保真代表性切片，让人确认透景、边�
 
 这些案例只用于展示交互与视觉结构，不接入真实账户、定位、支付或系统权限。
 
-## 使用与验证
+## 开发与验收
 
-1. 使用 `$apple-liquid-glass` 并阅读 [SKILL.md](SKILL.md)。
-2. 先写 brief：页面目的、场景、视觉层级、控件拓扑、材质分布、颜色语义、交互状态与无障碍。
-3. 创建一个高保真预览，取得确认后再扩展。
-4. 在真实浏览器中检查桌面端、窄视口、交互状态、滚动透景和 fallback。
+Skill 的完整约束在 [SKILL.md](SKILL.md)。实现页面时先写 brief，再生成预览、获得确认、扩展页面，并在真实浏览器中检查桌面端、窄视口、交互状态、滚动透景和 fallback。
 
 ```bash
 python3 scripts/validate_skill.py .
