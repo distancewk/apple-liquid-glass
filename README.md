@@ -1,50 +1,77 @@
 # Apple Liquid Glass
 
-Apple Liquid Glass 是一个面向 Web 界面的设计与实现 Skill：
+一个让 AI 能独立设计并实现 Apple 风格 Web 页面的 Skill。
 
-> 先用 Apple HIG 的设计思想规划页面，再用固定的四层 SVG 液态玻璃方案实现材质。
+它把两件通常被混在一起的事明确拆开：先用 Apple HIG 判断页面应当解决什么、控件怎样分组、色彩怎样承担语义；再用固定的 SVG 四层液态玻璃结构实现浮动的功能控件。结果不是“给所有卡片加模糊”，而是让玻璃只在需要建立层级、导航或即时操作的地方出现。
 
-它不是普通的 glassmorphism，也不是一套可以随意替换的玻璃滤镜。它的目标是让页面同时具备清晰的产品目的、自然的交互行为和稳定一致的液态玻璃视觉语言。
+> Apple HIG 决定页面为什么这样设计；Liquid Glass 结构决定材质怎样真实地工作。
 
-## 核心理念
+## 适用场景
 
-Apple Liquid Glass 将界面设计拆成两层：
+- 需要 Apple 式克制、清晰层级和自然交互的 Web 页面
+- 工具栏、底部导航、浮动操作、媒体导览等需要透出背景的功能控件
+- 登录、设置、隐私说明、搜索、表单、内容浏览等需要完整体验规则的页面
+
+不适用于把每个内容卡片、输入框和按钮都做成玻璃，或把 Apple 的截图、资产、商标直接复制到网页中。
+
+## 设计与实现架构
 
 ```text
-设计层：目的、层级、视觉方向、交互、动效、排版、无障碍
+用户任务与产品约束
         ↓
-材质层：SVG 位移 + 四层液态玻璃结构
+页面 brief
+目的 · 内容层级 · 场景 · 颜色语义 · 无障碍
+        ↓
+Apple HIG 路由
+Foundations · Patterns · Components / Inputs · Technologies
+        ↓
+控件拓扑
+独立动作 / 独立同行动作 / 共享命令组
+        ↓
+三层视觉平面
+内容平面 → 标准信息分组 → Liquid Glass 功能控件
+        ↓
+固定材质渲染器
+SVG 位移滤镜 + 四层玻璃 + 匹配形状遮罩
+        ↓
+浏览器验证
+滚动透景 · 交互状态 · fallback · 可访问性 · Apple 一致性审查
 ```
 
-### 设计层
+### 1. 先决定控件关系，再决定圆角
 
-设计阶段将 Apple HIG 转译为可执行的 Web 决策：
+圆角不是装饰 token，而是表达控件关系的几何语言：
 
-- 明确页面的一个核心目的
-- 建立清晰的内容层级和常用路径
-- 选择统一的视觉方向与记忆点
-- 让控件在按下时立即响应
-- 让拖拽和手势保持 1:1 跟随
-- 让动效可以被打断，并继承释放速度
-- 保持进入、退出和触发源之间的空间连续性
-- 使用系统字体、合理的 tracking 和 leading
-- 处理 reduced motion、reduced transparency、high contrast、键盘焦点和触控区域
-- 用语义颜色、熟悉的控件与明确的恢复路径取代装饰性氛围
+| 关系 | 推荐形状 |
+| --- | --- |
+| 单个图标动作 | 独立圆形控件 |
+| 单个文字或图文动作 | 独立胶囊控件 |
+| 横向但彼此独立的同行操作 | 可使用多个独立胶囊 |
+| 工具栏、编辑菜单、紧凑 tab 等上下文命令 | 一个共享玻璃容器，内部是连续目标 |
+| 组内 hover、按下或选中项 | 容器内部的局部状态面，而不是第二个玻璃胶囊 |
 
-### 材质层
+嵌套形状遵循同心关系：真实内缩的子表面必须随外容器的半径与裁切变化，而不是任意再挑一个圆角数值。这样才能避免常见的“一排玻璃胶囊”或“双重边框”问题。
 
-所有玻璃表面必须使用以下四层：
+### 2. 三个视觉平面
+
+| 平面 | 职责 | 示例 |
+| --- | --- | --- |
+| 内容平面 | 人真正阅读、浏览或编辑的内容 | 图像、地图、文章、表单、列表 |
+| 标准材质平面 | 安静、可扫描的信息分组 | 隐私说明、设置组、正文卡片 |
+| Liquid Glass 控件平面 | 浮在内容上、用于导航或即时操作的功能层 | 工具栏、tab bar、返回、主操作 |
+
+玻璃不承担正文分组任务。它必须悬浮在有意义、可变化的背景之上，才能显示出透景和边缘折射。
+
+### 3. 固定的液态玻璃材质合同
+
+页面只使用一种材质实现：一份隐藏 SVG `feDisplacementMap` filter，以及每个玻璃表面固定的四层 DOM。内容永远位于 `z-index: 4`。
 
 | 层级 | 作用 |
 | --- | --- |
-| `liquid_glass-outer` | SVG 背景位移与边缘折射 |
-| `liquid_glass-cover` | `rgba(0, 0, 0, .12)` 与 `blur(2px)` |
-| `liquid_glass-sharp` | 清晰的边缘高光 |
-| `liquid_glass-reflect` | 内部反射、厚度和暗部阴影 |
-
-内容位于 `z-index: 4`，不能被折射层覆盖。
-
-## 标准结构
+| `liquid_glass-outer` | 通过 SVG 位移采样背景，并用遮罩保留折射边缘 |
+| `liquid_glass-cover` | 中性 `rgba(0, 0, 0, .12)` 遮罩与 `blur(2px)` |
+| `liquid_glass-sharp` | 1px 清晰边缘高光 |
+| `liquid_glass-reflect` | 方向性内反射、厚度与暗部 |
 
 ```html
 <svg style="display: none" aria-hidden="true">
@@ -60,40 +87,63 @@ Apple Liquid Glass 将界面设计拆成两层：
   <div class="liquid_glass-cover"></div>
   <div class="liquid_glass-sharp"></div>
   <div class="liquid_glass-reflect"></div>
-
-  <div class="liquid_glass-content">
-    <!-- 页面内容 -->
-  </div>
+  <div class="liquid_glass-content"><!-- 可交互内容 --></div>
 </div>
 ```
 
-背景必须具有可见的空间细节，例如图片、渐变场、轮廓线、色块或纹理。没有背景变化，就无法观察到边缘折射。
+对可滚动页面，至少一个主玻璃控件应固定在真实内容上方；滚动时，背景颜色和细节必须能透过表面发生变化。这是效果的一部分，不是额外的演示区。
 
-## 三个场景案例
+### 4. 渐进式交付
 
-三份案例共用同一套 SVG filter 与四层材质，但不复用同一种页面构图或控件形状。
+Skill 默认先生成一个高保真代表性切片，让人确认透景、边缘、厚度、层级和交互后，才扩展成完整页面或更多案例。这样既避免在错误的视觉方向上堆内容，也让材质问题能被局部修正。
 
-| 场景 | 重点 | 运行文件 |
-| --- | --- | --- |
-| 山野导览 | 照片内容层上的粘性横向工具栏；滚动时透过玻璃观察场景变化 | [01-trail-guide.html](examples/01-trail-guide.html) |
-| 专注计时 | 以圆形玻璃控制器组织一次明确的开始／暂停任务；便签和轨道构成非卡片式背景 | [02-focus-session.html](examples/02-focus-session.html) |
-| 隐私概览 | 标准信息分组与底部共享玻璃导航分层；强调可读性、解释与恢复路径 | [03-privacy-overview.html](examples/03-privacy-overview.html) |
+## 灵感来源与边界
 
-在本地 HTTP 服务中打开这些文件。它们是可交互的视觉案例，不接入真实账户、定位、支付或系统权限。
+| 来源 | 被转化为的规则 |
+| --- | --- |
+| [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) | 目的优先、层级、和谐、熟悉性、无障碍与跨场景适配 |
+| [Adopting Liquid Glass](https://developer.apple.com/documentation/TechnologyOverviews/adopting-liquid-glass) | 同心几何、工具栏分组、内容在控件下滚动时的可读性、玻璃颜色的克制使用 |
+| [Apple HIG — Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons) 与 [Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars) | 独立控件、共享命令组、主操作稀缺、标准图标、溢出菜单与操作位置 |
+| [shuding/liquid-glass](https://github.com/shuding/liquid-glass) | 本 Skill 唯一的 Web 材质基线：SVG 位移滤镜、遮罩边缘和四层表面结构 |
 
-| 山野导览 | 专注计时 | 隐私概览 |
-| --- | --- | --- |
-| ![山野导览预览](examples/trail-guide-desktop.png) | ![专注计时预览](examples/focus-session-desktop.png) | ![隐私概览预览](examples/privacy-overview-desktop.png) |
+本项目提炼的是设计原则与公开实现思路，不复制 Apple 截图、品牌资产、原生 UI 像素或受限商标；网页也不应伪装成原生系统界面。
 
-## 使用流程
+## 三个可运行案例
 
-1. 使用 `$apple-liquid-glass`，并阅读 [SKILL.md](./SKILL.md)。
-2. 先完成设计 brief：目的、视觉方向、层级、材质分布、交互状态、动效和无障碍。
-3. 再创建背景和页面内容。
-4. 使用标准 SVG filter 和四层玻璃结构。
-5. 先展示一个高保真预览取得确认，再扩展完整页面；在真实浏览器中检查桌面端、移动端、fallback 和控制台错误。
+三个案例共用同一材质合同，但刻意采用不同的构图、背景和控件轮廓，以验证这不是一个只会生成条形卡片的样式。
 
-## 验证
+### 01 · 山野导览
+
+照片内容上方的粘性玻璃工具栏。页面滚动时，山景和不同色块从控件后方经过，透景随之变化。
+
+[打开案例](examples/01-trail-guide.html)
+
+![山野导览：照片场景上方的粘性液态玻璃工具栏](examples/trail-guide-desktop.png)
+
+### 02 · 专注计时
+
+以一个圆形玻璃控制器组织开始／暂停任务；便签、轨道和时段信息构成非卡片式场景，验证圆形控件与连续状态反馈。
+
+[打开案例](examples/02-focus-session.html)
+
+![专注计时：深色场景中的圆形液态玻璃控制器](examples/focus-session-desktop.png)
+
+### 03 · 隐私概览
+
+用普通信息分组承载密集说明，只把底部顶层导航做成共享玻璃容器，验证“玻璃是功能层而不是内容卡片”的边界。
+
+[打开案例](examples/03-privacy-overview.html)
+
+![隐私概览：信息分组与底部共享液态玻璃导航](examples/privacy-overview-desktop.png)
+
+这些案例只用于展示交互与视觉结构，不接入真实账户、定位、支付或系统权限。
+
+## 使用与验证
+
+1. 使用 `$apple-liquid-glass` 并阅读 [SKILL.md](SKILL.md)。
+2. 先写 brief：页面目的、场景、视觉层级、控件拓扑、材质分布、颜色语义、交互状态与无障碍。
+3. 创建一个高保真预览，取得确认后再扩展。
+4. 在真实浏览器中检查桌面端、窄视口、交互状态、滚动透景和 fallback。
 
 ```bash
 python3 scripts/validate_skill.py .
@@ -102,36 +152,22 @@ python3 scripts/extract_html_example.py \
   --output /tmp/apple-liquid-glass/index.html
 ```
 
-浏览器验收至少确认：
+完成前，除了四层 DOM 与 SVG filter 的静态检查，还必须确认：背景在正常状态下可透见、滚动时背景确实改变、玻璃不可用时页面仍可读可操作、键盘焦点与减少动态/透明度偏好仍可用。
 
-- 每个 wrapper 都包含四个玻璃层
-- 存在 `#liquid_glass_filter`
-- `liquid_glass-outer` 使用 `url(#liquid_glass_filter)`
-- cover 使用 `blur(2px)`
-- 内容保持在 `z-index: 4`
-- 设计目的、信息层级、交互状态和无障碍策略清晰
-- SVG filter 不可用时页面仍然可读、可操作
-
-## 文件结构
+## 仓库结构
 
 ```text
-SKILL.md                         主 Skill 规范
-agents/openai.yaml               Skill 调用提示
-references/vanilla-example.md   可运行的四层液态玻璃 fixture
-references/apple-hig.md         Apple HIG 视觉语法与案例解读
-references/hig-foundations.md   色彩、排版、图标与无障碍基础
-references/hig-patterns.md      登录、表单、恢复与其他任务流
-references/hig-components-inputs.md  控件、输入与多端操作规则
-references/hig-technologies.md  能力与敏感数据边界
-references/verification.md      设计与材质验收清单
-examples/shared.css             三个案例共享的固定四层材质与 fallback
-examples/01-trail-guide.html   山野导览案例
-examples/02-focus-session.html 专注计时案例
-examples/03-privacy-overview.html 隐私概览案例
-scripts/validate_skill.py       Skill 静态校验
-scripts/extract_html_example.py 提取 HTML fixture
+SKILL.md                            主 Skill 规范与材质合同
+agents/openai.yaml                  Skill 调用提示
+references/apple-hig.md             HIG 视觉平面、控件拓扑与案例解读
+references/hig-foundations.md       颜色、排版、图标、深浅模式与无障碍
+references/hig-patterns.md          任务流、恢复路径与模式路由
+references/hig-components-inputs.md 控件、输入与多端操作规则
+references/hig-technologies.md      能力、敏感数据与真实产品边界
+references/verification.md          设计、材质与浏览器验收清单
+references/vanilla-example.md       可运行的四层液态玻璃 fixture
+examples/shared.css                 三个案例共用的固定材质与 fallback
+examples/                           三个可运行页面及其截图
+scripts/validate_skill.py           依赖无关的 Skill 静态校验
+scripts/extract_html_example.py     提取 HTML fixture
 ```
-
-## 许可与来源
-
-本 Skill 的液态玻璃实现方案基于公开的 [shuding/liquid-glass](https://github.com/shuding/liquid-glass) 代码思路整理；Apple HIG 的设计原则被转译为 Web 页面设计与交互决策规则。它不复制 Apple 的截图、资产或商标，也不声称网页等同于原生 Apple 界面。
