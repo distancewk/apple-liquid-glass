@@ -1,0 +1,83 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; margin: 0; }
+button { font: inherit; cursor: pointer; }
+.liquid-filter { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.liquid_glass-wrapper {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.liquid_glass-outer,
+.liquid_glass-cover,
+.liquid_glass-sharp,
+.liquid_glass-reflect {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--border-radius);
+  pointer-events: none;
+}
+
+.liquid_glass-outer {
+  z-index: 0;
+  backdrop-filter: url(#liquid_glass_filter);
+  -webkit-backdrop-filter: url(#liquid_glass_filter);
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="white"/></svg>'), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect x="5" y="5" width="calc(100% - 10px)" height="calc(100% - 10px)" rx="21" ry="21" fill="white"/></svg>');
+  mask-composite: exclude;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="white"/></svg>'), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect x="5" y="5" width="calc(100% - 10px)" height="calc(100% - 10px)" rx="21" ry="21" fill="white"/></svg>');
+  -webkit-mask-composite: xor;
+}
+
+[data-glass-shape="circle"] .liquid_glass-outer {
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" rx="50%" ry="50%" fill="white"/></svg>'), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect x="5" y="5" width="calc(100% - 10px)" height="calc(100% - 10px)" rx="50%" ry="50%" fill="white"/></svg>');
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" rx="50%" ry="50%" fill="white"/></svg>'), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect x="5" y="5" width="calc(100% - 10px)" height="calc(100% - 10px)" rx="50%" ry="50%" fill="white"/></svg>');
+}
+
+.liquid_glass-cover {
+  z-index: 2;
+  background: rgba(0, 0, 0, .12);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.liquid_glass-sharp {
+  z-index: 3;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .5), inset -1px -1px 0 rgba(255, 255, 255, .6);
+}
+
+.liquid_glass-reflect {
+  z-index: 2;
+  inset: 1px;
+  box-shadow: inset 2px 2px 6px 2px rgba(255, 255, 255, .2), inset -2px -2px 4px -1px rgba(255, 255, 255, .2);
+}
+
+.liquid_glass-content { position: relative; z-index: 4; }
+
+html[data-glass-mode="fallback"] .liquid_glass-outer { display: none; }
+html[data-glass-mode="fallback"] .liquid_glass-wrapper { background: rgba(48, 49, 45, .9); }
+
+@supports not ((backdrop-filter: url(#liquid_glass_filter)) or (-webkit-backdrop-filter: url(#liquid_glass_filter))) {
+  .liquid_glass-outer { display: none; }
+  .liquid_glass-wrapper { background: rgba(48, 49, 45, .9); }
+}
+
+@media (forced-colors: active) {
+  .liquid_glass-wrapper { border: 1px solid CanvasText; background: Canvas; color: CanvasText; }
+  .liquid_glass-outer, .liquid_glass-cover, .liquid_glass-reflect { display: none; }
+  .liquid_glass-sharp { box-shadow: none; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid_glass-wrapper { background: rgba(48, 49, 45, .94); }
+  .liquid_glass-outer, .liquid_glass-cover { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

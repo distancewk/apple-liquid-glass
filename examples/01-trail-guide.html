@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>山野导览 — Apple Liquid Glass 案例</title>
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      :root { color-scheme: dark; }
+      body { color: white; background: #183237; }
+      .toolbar-wrap { position: sticky; top: 18px; z-index: 10; width: min(92vw, 1040px); margin: 18px auto -86px; }
+      .toolbar { --border-radius: 26px; min-height: 62px; }
+      .toolbar .liquid_glass-content { display: flex; align-items: center; width: 100%; gap: 12px; padding: 8px; }
+      .round-action, .text-action { min-height: 44px; border: 0; color: white; background: rgba(255, 255, 255, .11); }
+      .round-action { width: 44px; border-radius: 50%; font-size: 25px; line-height: 1; }
+      .text-action { padding: 0 16px; border-radius: 999px; font-weight: 600; }
+      .toolbar-title { margin-inline: 8px auto; font-size: 15px; font-weight: 600; }
+      button:hover { background: rgba(255, 255, 255, .22); }
+      button:active { transform: translateY(1px) scale(.98); }
+      button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+      .hero { display: grid; min-height: 88vh; align-items: end; padding: 136px max(4vw, calc((100vw - 1040px) / 2)) 74px; background: linear-gradient(180deg, rgba(11, 34, 36, .02), rgba(11, 34, 36, .66)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2200&q=85') center / cover; }
+      .hero-copy { max-width: 560px; text-shadow: 0 2px 18px rgba(0, 0, 0, .35); }
+      .eyebrow { margin: 0 0 12px; color: rgba(255,255,255,.7); font-size: 12px; font-weight: 600; letter-spacing: .13em; }
+      h1 { max-width: 520px; margin: 0; font-size: clamp(48px, 7vw, 84px); font-weight: 600; letter-spacing: -.07em; line-height: .92; }
+      .hero-copy > p { max-width: 390px; margin: 22px 0 0; color: rgba(255,255,255,.82); font-size: 17px; }
+      .route { min-height: 85vh; padding: 132px max(4vw, calc((100vw - 1040px) / 2)) 88px; color: #1d2722; background: linear-gradient(135deg, #d9d8c7 0 38%, #bdcdbf 38% 64%, #e4d0b5 64%); }
+      .route-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, .7fr); gap: clamp(34px, 8vw, 116px); align-items: center; }
+      .route h2 { margin: 0; font-size: clamp(34px, 4vw, 52px); letter-spacing: -.055em; }
+      .route p { max-width: 450px; color: rgba(29,39,34,.68); font-size: 17px; }
+      .facts { display: grid; gap: 1px; overflow: hidden; border: 1px solid rgba(29,39,34,.16); border-radius: 24px 8px 24px 24px; background: rgba(255,255,255,.38); }
+      .fact { display: flex; justify-content: space-between; padding: 19px 20px; border-bottom: 1px solid rgba(29,39,34,.12); }
+      .fact:last-child { border-bottom: 0; }
+      .fact span { color: rgba(29,39,34,.56); }
+      .arrival { display: grid; min-height: 82vh; place-items: center; padding: 96px 24px; color: #f7f2e7; text-align: center; background: radial-gradient(circle at 30% 40%, rgba(212,159,99,.7), transparent 25%), linear-gradient(130deg, #3f362f, #776659 48%, #2d4648); }
+      .arrival small { font-size: 12px; letter-spacing: .14em; }
+      .arrival h2 { max-width: 620px; margin: 14px 0 0; font-size: clamp(38px, 6vw, 76px); font-weight: 500; letter-spacing: -.06em; line-height: .96; }
+      @media (max-width: 680px) { .toolbar-wrap { top: 10px; width: calc(100% - 24px); margin-top: 12px; } .toolbar-title { display: none; } .route-grid { grid-template-columns: 1fr; } .hero { padding-bottom: 54px; } }
+    </style>
+  </head>
+  <body>
+    <svg class="liquid-filter" style="display:none" aria-hidden="true"><defs><filter id="liquid_glass_filter" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox"><feDisplacementMap scale="200" /></filter></defs></svg>
+    <div class="toolbar-wrap">
+      <nav class="liquid_glass-wrapper toolbar" aria-label="路线操作">
+        <div class="liquid_glass-outer"></div><div class="liquid_glass-cover"></div><div class="liquid_glass-sharp"></div><div class="liquid_glass-reflect"></div>
+        <div class="liquid_glass-content"><button class="round-action" type="button" aria-label="返回">‹</button><span class="toolbar-title">阿尔卑斯山径</span><button class="text-action" type="button" aria-pressed="false">收藏</button></div>
+      </nav>
+    </div>
+    <main>
+      <section class="hero" aria-labelledby="trail-title"><div class="hero-copy"><p class="eyebrow">06:40 · 山谷起点</p><h1 id="trail-title">沿着云层，往上走。</h1><p>一条适合清晨出发的缓坡路线。请在日落前回到山口。</p></div></section>
+      <section class="route" aria-labelledby="route-title"><div class="route-grid"><div><p class="eyebrow">今日路线</p><h2 id="route-title">把方向留给脚下。</h2><p>从北侧松林进入，途经一段开阔的岩脊，终点能看见整个山谷。内容层保持安静，悬浮工具栏则在滚动中持续采样不同场景。</p></div><div class="facts" aria-label="路线信息"><div class="fact"><span>距离</span><strong>8.4 km</strong></div><div class="fact"><span>爬升</span><strong>620 m</strong></div><div class="fact"><span>预计时间</span><strong>3 h 20 min</strong></div></div></div></section>
+      <section class="arrival" aria-labelledby="arrival-title"><div><small>海拔 2,240 m</small><h2 id="arrival-title">抵达前，先停一会儿。</h2></div></section>
+    </main>
+    <script>
+      document.querySelector('.text-action').addEventListener('click', (event) => { const saved = event.currentTarget.getAttribute('aria-pressed') === 'true'; event.currentTarget.setAttribute('aria-pressed', String(!saved)); event.currentTarget.textContent = saved ? '收藏' : '已收藏'; });
+    </script>
+  </body>
+</html>

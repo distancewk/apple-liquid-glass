@@ -69,6 +69,22 @@ Apple Liquid Glass 将界面设计拆成两层：
 
 背景必须具有可见的空间细节，例如图片、渐变场、轮廓线、色块或纹理。没有背景变化，就无法观察到边缘折射。
 
+## 三个场景案例
+
+三份案例共用同一套 SVG filter 与四层材质，但不复用同一种页面构图或控件形状。
+
+| 场景 | 重点 | 运行文件 |
+| --- | --- | --- |
+| 山野导览 | 照片内容层上的粘性横向工具栏；滚动时透过玻璃观察场景变化 | [01-trail-guide.html](examples/01-trail-guide.html) |
+| 专注计时 | 以圆形玻璃控制器组织一次明确的开始／暂停任务；便签和轨道构成非卡片式背景 | [02-focus-session.html](examples/02-focus-session.html) |
+| 隐私概览 | 标准信息分组与底部共享玻璃导航分层；强调可读性、解释与恢复路径 | [03-privacy-overview.html](examples/03-privacy-overview.html) |
+
+在本地 HTTP 服务中打开这些文件。它们是可交互的视觉案例，不接入真实账户、定位、支付或系统权限。
+
+| 山野导览 | 专注计时 | 隐私概览 |
+| --- | --- | --- |
+| ![山野导览预览](examples/trail-guide-desktop.png) | ![专注计时预览](examples/focus-session-desktop.png) | ![隐私概览预览](examples/privacy-overview-desktop.png) |
+
 ## 使用流程
 
 1. 使用 `$apple-liquid-glass`，并阅读 [SKILL.md](./SKILL.md)。
@@ -108,6 +124,10 @@ references/hig-patterns.md      登录、表单、恢复与其他任务流
 references/hig-components-inputs.md  控件、输入与多端操作规则
 references/hig-technologies.md  能力与敏感数据边界
 references/verification.md      设计与材质验收清单
+examples/shared.css             三个案例共享的固定四层材质与 fallback
+examples/01-trail-guide.html   山野导览案例
+examples/02-focus-session.html 专注计时案例
+examples/03-privacy-overview.html 隐私概览案例
 scripts/validate_skill.py       Skill 静态校验
 scripts/extract_html_example.py 提取 HTML fixture
 ```
