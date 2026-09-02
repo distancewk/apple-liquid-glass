@@ -17,7 +17,7 @@ Choose the component by its job, then apply the liquid-glass renderer only when 
 ## Component grammar
 
 - **Navigation:** sidebar for broad peer destinations; tab bar for top-level mode switching; back control for hierarchical return; breadcrumb only when the hierarchy genuinely needs explicit path context.
-- **Contextual actions:** toolbar actions live near the current context; group related icon actions in one compact container; keep one primary/prominent action at most where attention needs a clear answer; place lower-frequency actions in an overflow/menu.
+- **Contextual actions:** toolbar actions live near the current context; group related commands in one compact container with contiguous hit regions; keep one primary/prominent action at most where attention needs a clear answer; place lower-frequency actions in an overflow/menu.
 - **Presentation:** a popover/anchored menu stays tied to its source; a sheet creates temporary focus while preserving a clear dismissal; an alert warns or asks for a consequential decision, not routine confirmation.
 - **Content:** lists/tables support scanning and repeated peer items; a collection/grid supports visual or heterogeneous browsing; a card represents one logical group, not merely a desire for roundness.
 - **Selection and input:** use a toggle for independent boolean state; segmented control for a small mutually exclusive visible set; menu/select for a longer exclusive set; checkbox list for multiple independent selections; radio-like options only when all exclusive options need comparison; slider for an immediate continuous range.
@@ -26,7 +26,11 @@ Choose the component by its job, then apply the liquid-glass renderer only when 
 ## Control selection
 
 - A button initiates an immediate action. Give it a clear verb or a widely recognized symbol, a 44 CSS px touch target on touch pages, and an immediate press state.
-- Keep prominent button treatment scarce. Use style and color, not mismatched size, to distinguish the preferred action. A horizontal row of text actions can use capsules; a vertical text stack uses related rounded rectangles.
+- Keep prominent button treatment scarce. Use style and color, not mismatched size, to distinguish the preferred action. A horizontal row of **independent** text actions can use capsules; a vertical text stack uses related rounded rectangles.
+- Do not apply that horizontal-row rule to a command group. A toolbar cluster, edit menu, segmented control, or compact tab group is one vessel with internal semantic targets, not several adjacent capsules. Its outer material expresses shared context; its local hover/press/selection treatment expresses the active member. Give an item outer rounding only where it touches the group’s outer edge, and clip internal state surfaces to the group.
+- Keep grouped hit regions contiguous. On pointer devices this prevents a distracting loss of hover/lift as the pointer crosses from one related action to the next; on touch it makes the group read as one organized control rather than a card wall.
+- In a constrained toolbar, decide which low-priority actions move to More before layout breaks. Never shrink icon targets below their usable size or let a clipped row silently hide commands.
+- Use familiar standard symbols for common actions such as back, share, search, cut, copy, paste, delete, save, and undo. Use a text label when the action is ambiguous or lacks a broadly recognized symbol. A destructive command belongs at the end of its command group and must communicate risk with more than color.
 - Use icon-only actions for standard, frequently recognized concepts and provide `aria-label`/tooltip. If users could reasonably ask “what does that icon do?”, add a text label.
 - A text field requests a small, specific value. Use persistent labels when a placeholder would disappear and erase context; use appropriate input types/autocomplete; use secure entry for secrets; validate early without preventing correction.
 - Native HTML controls (`button`, `input`, `select`, `dialog`, `details`) are preferred where they satisfy the task. Custom div-based controls must recreate semantics, focus, keyboard, state, and pointer behavior before they are acceptable.
@@ -46,12 +50,13 @@ For direct manipulation, track the pointer continuously, make motion interruptib
 
 ## Review checklist
 
-For each control, record: `user intent → semantic element → familiar component → placement/group → label/symbol → input alternatives → focus/press/disabled/error states → reason it is or is not glass`. If any link is unknown, return to the pattern or simplify the control.
+For each control, record: `user intent → semantic element → familiar component → independent target or shared group → placement/group → label/symbol → input alternatives → focus/press/disabled/error states → reason it is or is not glass`. If any link is unknown, return to the pattern or simplify the control.
 
 ## Official sources
 
 - [Components](https://developer.apple.com/design/human-interface-guidelines/components)
 - [Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons)
+- [Menus](https://developer.apple.com/design/human-interface-guidelines/menus)
 - [Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields)
 - [Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars)
 - [Sidebars](https://developer.apple.com/design/human-interface-guidelines/sidebars)

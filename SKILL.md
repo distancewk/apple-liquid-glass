@@ -56,7 +56,7 @@ Visual direction: tone, palette, texture, composition, and one memorable anchor
 Content hierarchy: primary, secondary, supporting, and action content
 Material map: each glass surface, its role, radius, weight, and background detail
 Plane map: which elements are content, standard material, and Liquid Glass controls
-Component grammar: familiar pattern/component, control grouping, shape choice, and placement rationale
+Component grammar: familiar pattern/component, independent target or shared command group, outer shape, local state surface, and placement rationale
 Interaction state map: idle, hover, press, focus, drag, release, disabled
 Motion model: immediate feedback, spring/transition choice, interruption, spatial origin
 Typography: platform font, display/body scale, weight, tracking, and leading
@@ -73,6 +73,7 @@ Apply these page rules before entering the material implementation:
 1. **Purpose and simplicity** — remove elements that do not support the primary job. Put the common path first; keep advanced options secondary.
 2. **Direction and differentiation** — choose a page-specific visual direction from the content and context. The Apple visual baseline above remains the default; vary palette, density, composition, and geometry only when the product reason is explicit. The liquid glass material remains the shared constant.
 3. **Agency and familiarity** — use recognizable labels, predictable placement, visible escape/undo paths, and controls next to the thing they affect.
+   - Decide control topology before styling: an independent action may use its own circle or capsule; a contextual command group gets one shared vessel with contiguous members and local internal state treatment. Follow the concentric-geometry rules in [Apple HIG Visual Grammar](references/apple-hig.md); do not solve grouping by multiplying glass wrappers.
 4. **Immediate response** — provide press feedback on pointer-down. For direct manipulation, update continuously with the pointer instead of waiting for release.
 5. **Interruptible motion** — gesture-driven animation must be redirectable at any time. Animate from the current presented value, carry release velocity into the next motion, and use critically damped springs by default. Use bounce only when momentum created it.
 6. **Spatial consistency** — enter and exit along related paths, anchor popovers/sheets to their trigger, and keep the source-to-result relationship visible.

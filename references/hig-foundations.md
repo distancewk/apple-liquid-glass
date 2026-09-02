@@ -32,6 +32,7 @@ The operative order is: purpose → content and task → layout → familiar con
 - Let meaningful backgrounds, artwork, and scrollable content extend beneath the functional control plane. Respect browser safe-area insets, readable margins, viewport changes, and text reflow.
 - Use the three planes: content; standard-material grouping; and Liquid Glass controls. A standard group is quiet and readable; glass floats to organize navigation or an immediate action.
 - Use concentric related radii for nested shapes. Let an isolated action be circular or capsule-shaped; let a group share one surrounding surface rather than multiplying glass containers.
+- Treat the background underneath glass as part of its legibility contract. At the resting scroll position, do not place similarly colored content directly behind control labels; use a scroll-edge treatment, a quieter scene, or stronger material separation when content moves beneath a control.
 
 ## Color and icons
 
@@ -41,6 +42,8 @@ The operative order is: purpose → content and task → layout → familiar con
 - One restrained tint can identify action, links, selection, and brand continuity. Use status hue only for actual status, and pair it with text, symbols, or state change.
 - Do not use the same color for unrelated meanings, hard-code an Apple system color as a permanent value, or make color the sole indication of focus, error, or interactivity.
 - Keep the liquid-glass cover neutral. Scene content may color the glass naturally; chromatic UI treatment still needs a named semantic job.
+- On glass, prefer monochrome labels and symbols that can adapt to the underlying scene. If a primary action needs color, tint that single action’s background rather than tinting its label or several neighboring controls. Do not make every toolbar action colorful.
+- Treat light, dark, and increased-contrast appearances as designed states, not inverted screenshots: dark surfaces generally recede while elevated surfaces separate foreground work; check icons, imagery, and text independently because a light-mode asset may disappear in dark mode.
 
 ### Icons
 
@@ -74,6 +77,8 @@ Before preview, answer: Is the user’s task visible in reading order? Is every 
 - [Layout](https://developer.apple.com/design/human-interface-guidelines/layout)
 - [Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
 - [Color](https://developer.apple.com/design/human-interface-guidelines/color)
+- [Dark Mode](https://developer.apple.com/design/human-interface-guidelines/dark-mode)
 - [Icons](https://developer.apple.com/design/human-interface-guidelines/icons)
+- [SF Symbols](https://developer.apple.com/design/human-interface-guidelines/sf-symbols)
 - [Typography](https://developer.apple.com/design/human-interface-guidelines/typography)
 - [Writing](https://developer.apple.com/design/human-interface-guidelines/writing)

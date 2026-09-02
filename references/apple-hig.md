@@ -91,6 +91,47 @@ Choose a shape because of the component and context, not because one radius feel
 | Content grouping, settings, privacy explanation | Standard material or neutral rounded box, with generous padding and no nested card maze |
 | Modal task | Sheet or alert only when focus or confirmation is genuinely needed; preserve the parent context and provide dismissal |
 
+### Control topology and concentric geometry
+
+Choose the *topology* before the radius: first decide whether people are acting on one independent target, several independent peer targets, or several contextually related actions that form one command group. Shape then reveals that relationship.
+
+| Topology | Correct construction | Do not do this |
+| --- | --- | --- |
+| One independent icon action | One circular control | Put it inside a decorative second circle or a needless group shell |
+| One independent text or icon-plus-text action | One capsule, especially when it floats alone | Use a rounded card merely because the label is long |
+| Independent peer text actions in a horizontal row | Separate capsules are acceptable when each is a separately scannable action | Pretend that unrelated actions are one menu by drawing a shared shell |
+| Contextually related actions, such as toolbar commands, an edit menu, or tab destinations | One shared glass vessel with contiguous hit regions; use spacing or subtle separators to distinguish items | Give every item a complete glass wrapper, rim, and pill border |
+| Selected, hovered, or pressed member of a group | A local state surface *inside the clipped group*; it follows the group’s outer contour only at a group edge | Add a second standalone capsule, doubled rim, or a conflicting shadow around the member |
+| Vertical action stack | Equal-height rounded rectangles with clear gaps; use a shared group only when the actions genuinely behave as one compact control | Turn every stacked row into a full-height capsule or a nested-card maze |
+
+The edit-menu pattern is therefore not a row of pills. Its outer vessel says “these commands belong to this selection”; its members are contiguous targets; a temporary inner highlight says “this member is focused, pressed, or selected.” A destructive command stays last and receives its destructive treatment from semantic color and label, not from a different container shape.
+
+Use **concentric geometry** for every visible inset. If a child surface is inset from a rounded parent by the same distance on every edge, derive the child radius from the parent rather than choosing a fashionable second number:
+
+```text
+child radius ≈ max(0, parent radius − uniform inset)
+```
+
+This is a practical CSS approximation, not a replacement for Apple’s concentric-shape APIs. For a capsule, the outer radius is half its height. An inset highlight should preferably be clipped by that same capsule; if it needs its own visible edge, use the corresponding reduced radius and verify it at the rendered size. `border-radius: inherit` alone is not concentric after an inset. For a circle, keep equal width and height. This is why a grouped menu can look rounder at its outside edges while its interior remains calm and almost rectangular. Do not use this formula to invent arbitrary nested cards — it applies only when the inset is a real child surface.
+
+For a custom web toolbar, use one `liquid_glass-wrapper` for the group and keep the ordinary semantic buttons in its `liquid_glass-content`; do not nest a four-layer glass wrapper inside each button:
+
+```html
+<div class="liquid_glass-wrapper" data-glass-shape="pill" style="--border-radius: 999px">
+  <div class="liquid_glass-outer"></div><div class="liquid_glass-cover"></div>
+  <div class="liquid_glass-sharp"></div><div class="liquid_glass-reflect"></div>
+  <div class="liquid_glass-content" role="toolbar" aria-label="编辑操作">
+    <button class="group-action">剪切</button>
+    <button class="group-action">复制</button>
+    <button class="group-action">粘贴</button>
+    <button class="group-action destructive">删除</button>
+    <button class="group-action more" aria-label="更多编辑操作">…</button>
+  </div>
+</div>
+```
+
+This markup expresses a command group, not a literal native edit-menu replacement. When an actual menu is needed, use the platform-appropriate menu semantics and keyboard behavior; do not make a persistent toolbar look like a context menu just to obtain its shape.
+
 Use component placement as part of its meaning:
 
 - Sidebars are leading-edge navigation for broad peer areas and need sufficient space. They float above extended content; they are not opaque columns pasted beside it.
@@ -134,11 +175,13 @@ This synthesis is based on the current official Apple Human Interface Guidelines
 - [Design principles](https://developer.apple.com/design/human-interface-guidelines/design-principles)
 - [Layout](https://developer.apple.com/design/human-interface-guidelines/layout)
 - [Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
+- [Adopting Liquid Glass](https://developer.apple.com/documentation/TechnologyOverviews/adopting-liquid-glass)
 - [Color](https://developer.apple.com/design/human-interface-guidelines/color)
 - [Typography](https://developer.apple.com/design/human-interface-guidelines/typography)
 - [Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons)
 - [Sidebars](https://developer.apple.com/design/human-interface-guidelines/sidebars)
 - [Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars)
+- [Menus](https://developer.apple.com/design/human-interface-guidelines/menus)
 - [Privacy](https://developer.apple.com/design/human-interface-guidelines/privacy)
 - [Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 - [Inputs and gestures](https://developer.apple.com/design/human-interface-guidelines/gestures)

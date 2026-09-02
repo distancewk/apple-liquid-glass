@@ -41,6 +41,23 @@ Read the sections matching the page’s user task before composition. A pattern 
 - Share the user’s selected content with an explicit title/preview and a familiar share action. Don’t surprise people by exporting extra private data.
 - File/media flows use standard-looking selection, upload, progress, failure, and retry states. Support drag/drop and paste where they are natural, while keeping an explicit picker/action alternative.
 
+## Additional pattern coverage
+
+Use the following compact routing rules when the task matches one of the remaining HIG pattern families. They prevent a visually polished page from omitting the behavior that makes the pattern trustworthy.
+
+| Pattern | Web decision to preserve |
+| --- | --- |
+| Charting data | Make the measure, time range, units, comparison, and no-data state explicit; never rely on color alone to distinguish a series. |
+| Collaboration and sharing | Identify people, access level, scope, and change status; provide a clear way to revoke or leave when that is meaningful. |
+| Drag and drop | Show a drop target and insertion/result preview during the drag; preserve a click/tap/keyboard route and let people cancel. |
+| Going full screen and multitasking | Hide chrome only contextually; keep a discoverable restoration path and let layout reflow rather than clipping controls. |
+| Launching and loading | Preserve orientation and task context; show useful progress only when waiting is material, never an endless decorative loader. |
+| Live viewing, audio, video, haptics | Make current state, playback/recording status, and core controls immediately discoverable; do not make sound or haptics the only feedback. |
+| Notifications | Ask only after people understand the benefit; identify the event and provide a useful in-product alternative when permission is declined. |
+| Ratings and reviews | Ask after a meaningful success, never block a task, and provide no visual pressure to rate positively. |
+| Printing | Preview the document identity, selected range/options, and error/retry path before commitment. |
+| Workouts and other safety-relevant activity | Keep live state glanceable, avoid unsafe interaction demands during activity, and distinguish estimates from confirmed readings. |
+
 ## Pattern choice table
 
 | If the user needs to… | Start with this pattern | Must be visible |
