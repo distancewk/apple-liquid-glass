@@ -93,6 +93,16 @@ Keep the material contract stable while allowing the page composition to respond
 - A scrollable flow should contain real content behind the glass control. Use a queue, timeline, task rhythm, or another meaningful product structure instead of adding a test-only transparency section.
 - Check the smallest supported viewport after varying widths and offsets; responsive rules must collapse asymmetric compositions into readable single-column content.
 
+## Primary composition examples
+
+When the requested page matches one of these contexts, inspect the corresponding runnable example for composition and material placement only. Do not copy its product copy, palette, or layout into an unrelated product.
+
+- [Music player](examples/04-music-player.html): immersive media content with one fixed bottom transport surface.
+- [Creative workbench](examples/05-workbench.html): an asymmetric, non-card canvas with one shared top command vessel.
+- [Team chat](examples/06-chat.html): ordinary scrolling message content with one fixed bottom composer surface.
+
+Together they demonstrate the intended boundary: liquid glass is a small functional control plane over changing content, not a default material for every module.
+
 ## Progressive delivery and approval gate
 
 Choose the delivery mode before implementation:

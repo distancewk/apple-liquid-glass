@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liquid Glass · 音乐播放</title>
+    <link rel="stylesheet" href="shared.css" />
+    <style>
+      :root { color-scheme: dark; background: #18212d; color: #f8f9fb; }
+      body { min-height: 180vh; overflow-x: hidden; background: #18212d; }
+      .scene { position: fixed; z-index: -2; inset: 0; overflow: hidden; background: radial-gradient(circle at 22% 12%, #fb9f72 0 4%, transparent 26%), radial-gradient(circle at 78% 15%, #7ac8d9 0 5%, transparent 31%), linear-gradient(132deg, #233955 0 33%, #735d77 52%, #e28c73 100%); }
+      .scene::before, .scene::after { position: absolute; border-radius: 50%; content: ""; filter: blur(8px); }
+      .scene::before { width: min(62vw, 720px); aspect-ratio: 1; left: -11%; top: 18%; background: repeating-radial-gradient(circle, rgba(255,237,184,.72) 0 4px, rgba(87,49,85,.28) 5px 22px); transform: rotate(-14deg); }
+      .scene::after { width: min(54vw, 650px); aspect-ratio: 1; right: -14%; bottom: 9%; background: repeating-radial-gradient(circle, rgba(31,45,70,.7) 0 7px, rgba(103,203,211,.45) 8px 30px); }
+      .page { width: min(1120px, calc(100% - 48px)); margin: 0 auto; padding: 42px 0 180px; }
+      .topline { display: flex; align-items: center; justify-content: space-between; gap: 20px; font-size: 14px; font-weight: 650; letter-spacing: .04em; }
+      .topline p { margin: 0; }.live-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: #ffe29c; box-shadow: 0 0 16px #ffe29c; }
+      .hero { display: grid; grid-template-columns: minmax(240px, .8fr) minmax(280px, 1.2fr); align-items: center; gap: clamp(36px, 7vw, 110px); min-height: 75vh; }
+      .disc { position: relative; width: min(42vw, 440px); aspect-ratio: 1; margin: auto; border-radius: 50%; background: radial-gradient(circle at 50% 50%, #f4d5b4 0 5%, #25334d 5.5% 10%, transparent 10.5%), repeating-radial-gradient(circle, #1c283e 0 8px, #344966 9px 12px, #182338 13px 21px); box-shadow: 0 44px 70px rgba(17,20,40,.38), inset 0 2px 5px rgba(255,255,255,.33); animation: orbit 16s linear infinite; }
+      .disc::after { position: absolute; inset: 21%; border-radius: 50%; background: conic-gradient(from 20deg, #ffc178, #e47389, #7bcad0, #ffc178); box-shadow: inset 0 0 0 18px rgba(27,37,58,.85); content: ""; }
+      .disc-mark { position: absolute; z-index: 1; inset: 38%; display: grid; place-items: center; border-radius: 50%; background: #f8e5d1; color: #22304a; font-size: 13px; font-weight: 800; letter-spacing: .1em; }
+      .intro .eyebrow { margin: 0 0 12px; color: rgba(255,255,255,.74); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }.intro h1 { max-width: 540px; margin: 0; font-size: clamp(54px, 8vw, 104px); letter-spacing: -.075em; line-height: .88; }.intro > p:not(.eyebrow) { max-width: 390px; margin: 23px 0 0; color: rgba(255,255,255,.78); font-size: 18px; line-height: 1.5; }
+      .track-sections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 30px; }.track-section { min-height: 300px; padding: 26px 20px; border-top: 1px solid rgba(255,255,255,.62); }.track-section:nth-child(1) { background: linear-gradient(150deg, rgba(247,127,94,.88), rgba(224,166,87,.52)); }.track-section:nth-child(2) { margin-top: 92px; background: linear-gradient(150deg, rgba(80,168,179,.88), rgba(83,114,167,.55)); }.track-section:nth-child(3) { margin-top: 34px; background: linear-gradient(150deg, rgba(158,103,169,.88), rgba(230,130,122,.55)); }.track-section h2 { margin: 0 0 54px; font-size: 15px; letter-spacing: .05em; text-transform: uppercase; }.track-section p { max-width: 250px; margin: 0; color: rgba(255,255,255,.88); font-size: 17px; line-height: 1.35; }
+      .transport { position: fixed; z-index: 3; right: max(24px, calc((100vw - 1120px) / 2)); bottom: 26px; left: max(24px, calc((100vw - 1120px) / 2)); min-height: 84px; --border-radius: 28px; }.transport .liquid_glass-content { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; width: 100%; padding: 13px 22px; }.now { min-width: 0; }.now b, .now span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.now span { margin-bottom: 4px; color: rgba(255,255,255,.68); font-size: 12px; }.now b { font-size: 16px; }.controls { display: flex; align-items: center; gap: 9px; }.controls button { display: grid; width: 44px; height: 44px; place-items: center; border: 0; border-radius: 50%; background: transparent; color: #fff; font-size: 18px; }.controls button:hover { background: rgba(255,255,255,.16); }.controls button:active { transform: scale(.94); }.controls .play { width: 52px; height: 52px; background: rgba(255,246,232,.78); color: #1b263d; box-shadow: inset 0 1px rgba(255,255,255,.8); }.timeline { display: grid; grid-template-columns: 32px minmax(70px, 1fr) 32px; align-items: center; gap: 9px; color: rgba(255,255,255,.72); font-size: 11px; text-align: right; }.timeline input { width: 100%; accent-color: #fff0c3; }
+      @keyframes orbit { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { .disc { animation: none; } }
+      @media (max-width: 700px) { body { min-height: 155vh; }.page { width: min(100% - 34px, 560px); padding-top: 28px; }.hero { grid-template-columns: 1fr; min-height: 0; padding: 60px 0 88px; }.disc { width: min(70vw, 360px); }.intro { text-align: center; }.intro > p:not(.eyebrow) { margin-right: auto; margin-left: auto; font-size: 16px; }.track-sections { grid-template-columns: 1fr; gap: 0; }.track-section, .track-section:nth-child(2), .track-section:nth-child(3) { min-height: 160px; margin-top: 0; }.track-section h2 { margin-bottom: 22px; }.transport { right: 12px; bottom: 12px; left: 12px; --border-radius: 24px; }.transport .liquid_glass-content { grid-template-columns: 1fr auto; padding: 10px 13px; }.timeline { display: none; } }
+    </style>
+  </head>
+  <body>
+    <svg class="liquid-filter" aria-hidden="true"><defs><filter id="liquid_glass_filter" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox"><feDisplacementMap scale="200" /></filter></defs></svg>
+    <div class="scene" aria-hidden="true"></div>
+    <main class="page">
+      <header class="topline"><p><span class="live-dot"></span>DAYLIGHT RADIO</p><p>Volume 12 · 2026</p></header>
+      <section class="hero" aria-labelledby="album-title"><div class="disc" aria-hidden="true"><span class="disc-mark">DAY<br>LIGHT</span></div><div class="intro"><p class="eyebrow">Now in rotation</p><h1 id="album-title">Warm<br>Signal</h1><p>音乐是内容，玻璃只承载持续可用的播放控制。向下滚动，唱片集的颜色会从控制条后方经过。</p></div></section>
+      <section class="track-sections" aria-label="专辑曲目"><article class="track-section"><h2>01 / Dawn</h2><p>橙色的光线从低处穿过。</p></article><article class="track-section"><h2>02 / Tide</h2><p>蓝绿的节拍在夜色里呼吸。</p></article><article class="track-section"><h2>03 / Halo</h2><p>一段缓慢展开的合成器尾奏。</p></article></section>
+    </main>
+    <section class="transport liquid_glass-wrapper" data-glass-shape="rounded" aria-label="播放控制"><div class="liquid_glass-outer"></div><div class="liquid_glass-cover"></div><div class="liquid_glass-sharp"></div><div class="liquid_glass-reflect"></div><div class="liquid_glass-content"><div class="now"><span>Warm Signal · Side A</span><b id="track-name">Dawn, softly</b></div><div class="controls"><button type="button" aria-label="上一首">‹</button><button class="play" id="play" type="button" aria-label="播放">▶</button><button type="button" aria-label="下一首">›</button></div><label class="timeline"><span>0:38</span><input aria-label="播放进度" type="range" value="28" /><span>3:42</span></label></div></section>
+    <script>const play=document.querySelector('#play');play.addEventListener('click',()=>{const active=play.textContent==='Ⅱ';play.textContent=active?'▶':'Ⅱ';play.setAttribute('aria-label',active?'播放':'暂停')});</script>
+  </body>
+</html>

@@ -42,7 +42,7 @@ cd ~/.codex/skills/apple-liquid-glass
 python3 -m http.server 4173
 ```
 
-然后打开 `http://localhost:4173/examples/01-trail-guide.html`。另外两个案例分别是 `02-focus-session.html` 和 `03-privacy-overview.html`。
+然后打开 `http://localhost:4173/examples/04-music-player.html`。另外两个主案例分别是 `05-workbench.html` 和 `06-chat.html`。
 
 ## 它适合做什么
 
@@ -56,9 +56,9 @@ python3 -m http.server 4173
 
 | 案例 | 验证重点 | 直接打开 |
 | --- | --- | --- |
-| 山野导览 | 粘性玻璃工具栏随滚动透出变化的山景 | [运行](examples/01-trail-guide.html) |
-| 专注计时 | 圆形玻璃控制器与非卡片式场景 | [运行](examples/02-focus-session.html) |
-| 隐私概览 | 普通信息分组与底部共享玻璃导航分层 | [运行](examples/03-privacy-overview.html) |
+| 音乐播放 | 沉浸式封面背景与底部播放控制 | [运行](examples/04-music-player.html) |
+| 创意工作台 | 自由画布、便签与顶部共享工具栏 | [运行](examples/05-workbench.html) |
+| 团队聊天 | 滚动消息流与底部悬浮输入器 | [运行](examples/06-chat.html) |
 
 ## 工作原理
 
@@ -158,29 +158,29 @@ Skill 默认先生成一个高保真代表性切片，让人确认透景、边�
 
 三个案例共用同一材质合同，但刻意采用不同的构图、背景和控件轮廓，以验证这不是一个只会生成条形卡片的样式。
 
-### 01 · 山野导览
+### 01 · 音乐播放
 
-照片内容上方的粘性玻璃工具栏。页面滚动时，山景和不同色块从控件后方经过，透景随之变化。
+唱片、曲目与歌词片段组成沉浸式内容场景；底部播放控制只承担即时操作。滚动时，内容色彩会从控制器下方经过。
 
-[打开案例](examples/01-trail-guide.html)
+[打开案例](examples/04-music-player.html)
 
-![山野导览：照片场景上方的粘性液态玻璃工具栏](examples/trail-guide-desktop.png)
+![音乐播放：沉浸式内容上方的底部液态玻璃播放控制](examples/music-player-desktop.png)
 
-### 02 · 专注计时
+### 02 · 创意工作台
 
-以一个圆形玻璃控制器组织开始／暂停任务；便签、轨道和时段信息构成非卡片式场景，验证圆形控件与连续状态反馈。
+自由画布、连线、错落便签和项目色板承担内容本身；顶部是一个连续的共享玻璃工具栏，避免把每个命令拆成独立胶囊。
 
-[打开案例](examples/02-focus-session.html)
+[打开案例](examples/05-workbench.html)
 
-![专注计时：深色场景中的圆形液态玻璃控制器](examples/focus-session-desktop.png)
+![创意工作台：自由画布上方的共享液态玻璃工具栏](examples/workbench-desktop.png)
 
-### 03 · 隐私概览
+### 03 · 团队聊天
 
-用普通信息分组承载密集说明，只把底部顶层导航做成共享玻璃容器，验证“玻璃是功能层而不是内容卡片”的边界。
+消息气泡保持普通内容材质，只有固定在底部的输入器使用玻璃。新消息和滚动中的对话会透过输入器变化，验证真实的 scroll-through 关系。
 
-[打开案例](examples/03-privacy-overview.html)
+[打开案例](examples/06-chat.html)
 
-![隐私概览：信息分组与底部共享液态玻璃导航](examples/privacy-overview-desktop.png)
+![团队聊天：滚动消息流上方的底部液态玻璃输入器](examples/chat-desktop.png)
 
 这些案例只用于展示交互与视觉结构，不接入真实账户、定位、支付或系统权限。
 
@@ -209,8 +209,8 @@ references/hig-components-inputs.md 控件、输入与多端操作规则
 references/hig-technologies.md      能力、敏感数据与真实产品边界
 references/verification.md          设计、材质与浏览器验收清单
 references/vanilla-example.md       可运行的四层液态玻璃 fixture
-examples/shared.css                 三个案例共用的固定材质与 fallback
-examples/                           三个可运行页面及其截图
+examples/shared.css                 三个案例共用的固定材质、形状遮罩与 fallback
+examples/04-06-*.html               音乐播放、工作台、聊天三个主案例
 scripts/validate_skill.py           依赖无关的 Skill 静态校验
 scripts/extract_html_example.py     提取 HTML fixture
 ```
