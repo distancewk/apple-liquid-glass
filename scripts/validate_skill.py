@@ -109,10 +109,11 @@ def validate(skill_dir: Path) -> None:
         fail("SKILL.md still contains TODO")
 
     for required_section in (
-        "## Rule precedence and overrides",
-        "## Default Apple visual baseline",
+        "## Rule precedence and strict boundary",
+        "## Strict Apple visual baseline",
         "### Anti-AI visual gate",
         "### Palette decision gate",
+        "references/strict-apple-profile.md",
         "## Apple HIG visual grammar",
         "## Page phase: purpose + behavior",
         "## SVG displacement fundamentals",
@@ -176,6 +177,7 @@ def validate(skill_dir: Path) -> None:
             fail(f"{reference.relative_to(skill_dir)} still contains TODO")
 
     for reference_name, required_sections in {
+        "strict-apple-profile.md": ("## Interface foundation", "## Content color boundary", "## Strict review"),
         "hig-foundations.md": ("## Color and icons", "## Accessibility baseline", "44 CSS px"),
         "hig-patterns.md": ("## Pattern choice table", "## Feedback, recovery, and state"),
         "hig-components-inputs.md": ("## Component grammar", "## Input parity"),

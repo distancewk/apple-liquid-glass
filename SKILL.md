@@ -1,15 +1,15 @@
 ---
 name: apple-liquid-glass
-description: Independently plan and implement focused Apple-like web pages with the reference liquid glass material from shuding/liquid-glass: restrained content-first design plus a hidden SVG displacement filter, four stacked surface layers, SVG edge masks, 2px cover blur, sharp rim lighting, and reflective inset shadows.
+description: Plan and implement strictly Apple-like web pages with the shuding/liquid-glass reference material: an Apple content and control grammar plus a hidden SVG displacement filter, four stacked surface layers, SVG masks, 2px cover blur, sharp rim lighting, and reflective inset shadows.
 ---
 
-# Apple Liquid Glass Design
+# Apple Liquid Glass — Strict Apple Profile
 
 Use the reference implementation as the material contract. The page can have any product-specific layout, but every glass surface must use this four-layer SVG/CSS construction.
 
-This skill is self-contained for a new HTML/CSS/JS page: do not require another design skill to choose the page direction or implement the material. If no framework or project is supplied, use the vanilla fixture in [references/vanilla-example.md](references/vanilla-example.md) as the starting point and serve it from a local HTTP origin for browser verification.
+This skill is self-contained for a new HTML/CSS/JS page. It ships a strict Apple profile, not a general "Apple-inspired" art direction: do not introduce a second visual system to make a page feel distinctive. If no framework or project is supplied, use the vanilla fixture in [references/vanilla-example.md](references/vanilla-example.md) as the starting point and serve it from a local HTTP origin for browser verification.
 
-Before designing a new Apple-like page, start with the routing, three-plane, and component-shape sections in [references/apple-hig.md](references/apple-hig.md), plus the use/boundary, layout/material, color/icons, and accessibility sections in [references/hig-foundations.md](references/hig-foundations.md). They translate the current official HIG information architecture and the studied Landmarks and App Privacy examples into web decisions for hierarchy, planes, color, imagery, type, writing, iconography, accessibility, and recovery. Load the remaining sections only when the page task makes them relevant, then load the task-specific HIG guide before choosing a pattern or component:
+Before designing every page, read [Strict Apple profile](references/strict-apple-profile.md), then the routing, three-plane, and component-shape sections in [references/apple-hig.md](references/apple-hig.md), plus the use/boundary, layout/material, color/icons, and accessibility sections in [references/hig-foundations.md](references/hig-foundations.md). They translate the current official HIG information architecture and the studied Landmarks and App Privacy examples into web decisions for hierarchy, planes, color, imagery, type, writing, iconography, accessibility, and recovery. Load the remaining sections only when the page task makes them relevant, then load the task-specific HIG guide before choosing a pattern or component:
 
 - For a flow involving sign-in, search, onboarding, settings, forms, permissions, feedback, errors, help, account management, destructive actions, or undo, read [references/hig-patterns.md](references/hig-patterns.md).
 - For navigation, actions, selections, lists, collections, fields, menus, alerts, sheets, toolbars, sidebars, tabs, status, or keyboard/pointer/touch behavior, read [references/hig-components-inputs.md](references/hig-components-inputs.md).
@@ -17,29 +17,28 @@ Before designing a new Apple-like page, start with the routing, three-plane, and
 
 These are operational syntheses, not screenshot-copying recipes: preserve the user’s product, brand, and content while applying the underlying grammar. Do not copy Apple screenshots, assets, trademarks, or fixed pixels.
 
-## Rule precedence and overrides
+## Rule precedence and strict boundary
 
 Resolve conflicts in this order:
 
 1. **Accessibility and operability** — preserve legibility, keyboard and touch operation, reduced-motion/transparency support, and meaningful fallback behavior.
-2. **Explicit product or brand direction** — honor a user-requested palette, typography, composition, or art direction when it does not break accessibility or the material contract.
+2. **Strict Apple profile** — preserve neutral interface surfaces, semantic color roles, system-like type hierarchy, familiar controls, content-first layout, and the three visual planes.
 3. **Material contract** — preserve the SVG filter, four real layers, matching masks, `rgba(0, 0, 0, 0.12)` cover, and `blur(2px)` reference behavior unless target-browser evidence requires the documented readable fallback.
-4. **Apple visual baseline** — apply content-first hierarchy, functional glass, semantic color, concise writing, and platform-aware adaptation.
-5. **Anti-AI defaults** — remove unrequested decorative patterns that add atmosphere without meaning.
+4. **Product content** — a supplied photograph, map, album artwork, chart, or brand asset may be expressive inside the content plane; it does not redefine interface color, typography, or component grammar.
 
-The Apple and Anti-AI rules are visual defaults, not a ban on expressive design. An explicit request can override them; it cannot justify an inaccessible interface or a broken liquid-glass material.
+If a request asks for an incompatible visual system — for example a neon, editorial, maximalist, or multi-accent brand treatment — state the conflict and ask whether to leave this strict profile. Do not blend the two systems or silently weaken the Apple baseline.
 
-## Default Apple visual baseline
+## Strict Apple visual baseline
 
-Use [Foundations](references/hig-foundations.md) as the sole owner of foundation rules and [Apple HIG Visual Grammar](references/apple-hig.md) as the sole owner of visual planes, shape/grouping, and studied examples. The default is content-first hierarchy, functional glass, a neutral semantic palette with one dominant accent, familiar controls, and purposeful motion. Explicit product direction can be more expressive when it remains accessible and respects the material contract.
+Use [Foundations](references/hig-foundations.md) as the sole owner of foundation rules and [Apple HIG Visual Grammar](references/apple-hig.md) as the sole owner of visual planes, shape/grouping, and studied examples. The strict default is neutral semantic surfaces, one restrained application tint, familiar controls, content-first hierarchy, and purposeful motion. Distinction comes from the task, content order, and component topology — not from a new UI palette, display type system, or decorative scene.
 
 ### Anti-AI visual gate
 
-Reject unrequested decoration that does not clarify the task: blue-purple neon, gratuitous glow, floating ornaments, **unjustified repeated glass pills**, card walls, invented slogans, or color with no semantic job. Separate capsules remain valid for genuinely independent horizontal actions; a contextual command group must share one vessel. This gate is applied in the preview audit in [references/verification.md](references/verification.md).
+Ship a calm, content-led interface: neutral interface surfaces; system-font typography; one familiar action tint; ordinary groups for information; and sparse glass only for floating controls. Reject any unclassified UI color, decorative gradient, unrequested glow, floating ornament, repeated glass pills, card wall, invented slogan, or display treatment that competes with the task. Separate capsules remain valid for genuinely independent horizontal actions; a contextual command group shares one vessel. This gate is applied in the preview audit in [references/verification.md](references/verification.md).
 
 ### Palette decision gate
 
-For every non-neutral color, record `role → token → light/dark/contrast behavior → non-color cue`. Use one dominant accent by default; scene color is content rather than interface tint. The detailed color rules live in [references/hig-foundations.md](references/hig-foundations.md).
+For every non-neutral color, record `role → token → light/dark/contrast behavior → non-color cue`. The only allowed roles are `accent`, `link`, `selection`, `status`, or `content asset`; any other UI color fails the strict profile. Use one application accent. A content asset may be colorful only when it is named content such as supplied imagery, artwork, a map, or data; it never tints the surrounding interface. The detailed rules live in [references/strict-apple-profile.md].
 
 ## Apple HIG visual grammar
 
@@ -52,7 +51,7 @@ Before writing markup or CSS, produce the following page brief: define the produ
 ```text
 Purpose: the one job this page must accomplish
 Audience and context: who uses it, when, and on what device
-Visual direction: tone, palette, texture, composition, and one memorable anchor
+Visual direction: strict Apple profile; neutral interface; one application tint; named content asset if needed
 Content hierarchy: primary, secondary, supporting, and action content
 Material map: each glass surface, its role, radius, weight, and background detail
 Plane map: which elements are content, standard material, and Liquid Glass controls
@@ -72,7 +71,7 @@ Acceptance criteria: design checks and material checks
 Apply these page rules before entering the material implementation:
 
 1. **Purpose and simplicity** — remove elements that do not support the primary job. Put the common path first; keep advanced options secondary.
-2. **Direction and differentiation** — choose a page-specific visual direction from the content and context. The Apple visual baseline above remains the default; vary palette, density, composition, and geometry only when the product reason is explicit. The liquid glass material remains the shared constant.
+2. **Structure, not restyling** — vary information architecture, content silhouette, and control topology when the product requires it. Keep the strict Apple foundation stable across pages: neutral interface colors, system typography, restrained spacing, and one application tint.
 3. **Agency and familiarity** — use recognizable labels, predictable placement, visible escape/undo paths, and controls next to the thing they affect.
    - Decide control topology before styling: an independent action may use its own circle or capsule; a contextual command group gets one shared vessel with contiguous members and local internal state treatment. Follow the concentric-geometry rules in [Apple HIG Visual Grammar](references/apple-hig.md); do not solve grouping by multiplying glass wrappers.
 4. **Immediate response** — provide press feedback on pointer-down. For direct manipulation, update continuously with the pointer instead of waiting for release.
@@ -83,19 +82,19 @@ Apply these page rules before entering the material implementation:
 9. **Anti-pattern review** — before showing the preview, check the anti-AI visual gate and palette decision gate. A technically correct glass surface is not acceptable if the surrounding page still reads as generic AI-generated sci-fi UI.
 10. **HIG review** — verify each control and flow against the selected HIG route before styling; do not derive a new component from a screenshot.
 
-## Composition diversity
+## Composition diversity within one system
 
-Keep the material contract stable while allowing the page composition to respond to its subject:
+Keep the strict Apple foundation and material contract stable while allowing page composition to respond to its subject:
 
 - Do not make every content module a full-width rounded rectangle or horizontal bar.
-- For multiple cases, vary at least three of these axes: primary layout, module silhouette, control silhouette, spacing density, background treatment, and information rhythm.
-- Choose shapes from the content: media can use staggered album cards, weather can use circles or tall forecast cards, and productivity can use compact tiles or asymmetric markers. Shape changes must clarify hierarchy, not add decoration without a job.
+- For multiple cases, vary primary layout, module silhouette, control silhouette, spacing density, and information rhythm. Do not vary the default interface palette, type system, or visual temperature to make cases feel different.
+- Choose shapes from the content: media can use artwork and a queue, productivity can use a canvas or list, and conversation can use a thread. Shape changes clarify hierarchy; they do not add decorative color fields.
 - A scrollable flow should contain real content behind the glass control. Use a queue, timeline, task rhythm, or another meaningful product structure instead of adding a test-only transparency section.
 - Check the smallest supported viewport after varying widths and offsets; responsive rules must collapse asymmetric compositions into readable single-column content.
 
-## Primary composition examples
+## Strict composition examples
 
-When the requested page matches one of these contexts, inspect the corresponding runnable example for composition and material placement only. Do not copy its product copy, palette, or layout into an unrelated product.
+When the requested page matches one of these contexts, inspect the corresponding runnable example for composition and material placement only. All examples use the same strict Apple visual foundation; do not treat an example as permission to invent a new palette or editorial art direction.
 
 - [Music player](examples/04-music-player.html): immersive media content with one fixed bottom transport surface.
 - [Creative workbench](examples/05-workbench.html): an asymmetric, non-card canvas with one shared top command vessel.
@@ -397,7 +396,7 @@ Before handoff, verify all of the following in a real browser:
 ### Design acceptance
 
 - The page has a stated purpose and a clear common path; every visible element supports that purpose.
-- The visual direction is coherent and has one intentional memorable anchor.
+- The strict Apple foundation is coherent; any expressive anchor is a named content asset rather than interface decoration.
 - Interactive controls respond on press, and gesture-driven motion can be interrupted and redirected.
 - Enter/exit paths and trigger-to-surface relationships are spatially consistent.
 - Material weight communicates hierarchy without stacking translucent surfaces into an unreadable pile.

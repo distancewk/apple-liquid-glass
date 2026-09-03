@@ -45,7 +45,7 @@ In `preview` mode, show the preview or its screenshot and ask the user to judge 
 
 After approval in `preview` mode — or directly in `full` mode — reuse the preview material contract and expand the page; then create additional cases with content-specific compositions. Record the selected mode, approval/revision decision when applicable, and browser evidence.
 
-Resolve preview conflicts in this order: accessibility and operability, explicit product or brand direction, the liquid-glass material contract, the Apple visual baseline, then the Anti-AI defaults. Explicit visual direction may override the aesthetic defaults, but never the material or accessibility requirements.
+Resolve preview conflicts in this order: accessibility and operability, the strict Apple profile, the liquid-glass material contract, then named product content. A conflicting brand or art direction requires an explicit decision to leave this skill's strict profile; do not blend it into the preview.
 
 Apply the Foundation and HIG visual-grammar guides during the preview. The preview must have a clear task, semantic color, functional glass, readable resting state, familiar controls, and no unrequested decorative atmosphere. Record the evidence rather than duplicating the foundation rules here.
 
@@ -79,13 +79,13 @@ Also assert:
 Before checking CSS, confirm the page has:
 
 - a one-sentence purpose and a clear common path;
-- one coherent visual direction and one intentional memorable anchor;
+- one coherent strict Apple foundation and a task-relevant content anchor only when the product has one;
 - a content hierarchy that distinguishes primary, secondary, supporting, and action content;
 - explicit idle, hover, press, focus, drag, release, disabled, and reduced-motion behavior where applicable;
 - spatially consistent transitions that remain interruptible;
 - readable typography, focus indicators, touch targets, and reduced-transparency/high-contrast behavior.
 - a content-first composition with no unearned marketing copy or decorative AI-style atmosphere;
-- a stated semantic job for every non-neutral color, with one dominant tint and only necessary status colors; light/dark/increased-contrast variants are defined, and no unrequested blue-purple neon or rainbow gradient default;
+- a stated semantic job for every non-neutral color, limited to `accent`, `link`, `selection`, `status`, or `content asset`; one application tint and only necessary status colors; light/dark/increased-contrast variants are defined;
 - Apple-style color roles are used consistently: neutral system-like surfaces and labels, a restrained app tint, status colors only for status, and scene colors kept separate from interface accents;
 - glass reserved for functional hierarchy rather than applied indiscriminately to every module.
 - content and controls are visibly separated, with structural glass used only to carry or organize a functional layer, never as content decoration;
@@ -114,7 +114,7 @@ Run this review after the complete page is implemented and after the last visual
 - Account, permission, payment, sensitive-data, automated, destructive, and failure paths clearly explain what will happen, retain user control, and offer the relevant cancellation, correction, retry, or undo path.
 - Typography, contrast, focus, press feedback, touch targets, and non-color status cues remain usable.
 - Light/dark appearance, high contrast, forced colors, reduced transparency, reduced motion, small screens, long text, locale, and RTL remain usable.
-- The anti-AI visual gate passes: no unrequested neon, gratuitous glow/gradient, floating ornament, unjustified repeated glass pill, rounded-card wall, or invented futuristic label. Separate pills remain acceptable for truly independent peer actions.
+- The strict profile passes: no unclassified UI color, decorative gradient/glow/texture, floating ornament, unjustified repeated glass pill, rounded-card wall, invented slogan, or display-style hierarchy that competes with the task. Separate pills remain acceptable for truly independent peer actions.
 
 If any item fails, fix the smallest relevant variable, repeat the browser and screenshot checks, and update the record. Explicit product or brand direction may override the Apple visual defaults only when it remains accessible and preserves the material contract.
 
@@ -125,6 +125,7 @@ When reviewing more than one page or case:
 - the pages do not reuse the same full-width bar or rounded-card silhouette for every major module;
 - each case has a distinct primary composition and at least one distinct content shape or control shape;
 - the shape variation follows the content hierarchy and remains readable on the smallest supported viewport;
+- the cases retain one neutral interface palette and type system; variation comes from task, content silhouette, and control topology rather than an alternate visual theme;
 - scrollable content is a real product flow, not a standalone material test area.
 
 ## Material acceptance
