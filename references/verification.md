@@ -68,7 +68,7 @@ Also assert:
 - the cover has `background: rgba(0, 0, 0, 0.12)` and `backdrop-filter: blur(2px)`;
 - the sharp layer has the two one-pixel inset highlights;
 - the reflect layer has the two directional inset shadows;
-- content is above the four layers at `z-index: 4`.
+- content is above the four layers at `z-index: 4` and fills the wrapper (`width: 100%; min-width: 0`) unless intrinsic sizing is intentional;
 - the SVG contains the reference `feDisplacementMap` with `scale="200"`;
 - the reference filter is defined once before wrappers;
 - the intended background is not hidden behind an opaque wrapper or ancestor;
@@ -88,7 +88,7 @@ Before checking CSS, confirm the page has:
 - a stated semantic job for every non-neutral color, limited to `accent`, `link`, `selection`, `status`, or `content asset`; one application tint and only necessary status colors; light/dark/increased-contrast variants are defined;
 - Apple-style color roles are used consistently: neutral system-like surfaces and labels, a restrained app tint, status colors only for status, and scene colors kept separate from interface accents;
 - glass reserved for functional hierarchy rather than applied indiscriminately to every module.
-- content and controls are visibly separated, with structural glass used only to carry or organize a functional layer, never as content decoration;
+- content and controls are visibly separated, with structural glass used only to carry or organize a functional layer, never as content decoration; unexplained empty space inside a toolbar or composer is a layout failure;
 - the first/resting view remains readable before any scrolling or interaction changes the backdrop;
 - custom colors have light, dark, and increased-contrast behavior, and no state relies on color alone;
 - custom buttons provide a visible press state and touch targets are at least 44 CSS px where touch input is expected;
@@ -134,7 +134,7 @@ Confirm the DOM and computed styles satisfy the four-layer contract before judgi
 
 - one `#liquid_glass_filter` definition is present;
 - every wrapper has exactly one outer, cover, sharp, and reflect layer;
-- the content layer is above the material layers;
+- the content layer is above the material layers and fills the wrapper unless intrinsic sizing is intentional;
 - the background contains visible detail behind the wrapper.
 - the surface remains partially transparent; no opaque fill covers the sampled backdrop;
 - the glass is not nested inside an unrelated filtered, transformed, or paint-contained ancestor that changes the intended backdrop topology;

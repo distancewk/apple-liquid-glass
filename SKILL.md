@@ -139,7 +139,7 @@ The reference look is produced by four separate layers, in this order:
 3. `liquid_glass-sharp` — adds the crisp one-pixel white edge.
 4. `liquid_glass-reflect` — adds the inset directional highlight and darker inner edge.
 
-Keep content in a separate layer at `z-index: 4`. The surface is the composition of these layers; it is not one `backdrop-filter` declaration.
+Keep content in a separate layer at `z-index: 4`; its content layer must fill the wrapper (`width: 100%; min-width: 0`) unless an intrinsic-size surface is deliberate. The surface is the composition of these layers; it is not one `backdrop-filter` declaration.
 
 ## Required SVG definition
 
@@ -324,7 +324,7 @@ Make translucency observable in a real product flow, not only in an isolated mat
 3. Write the page brief before choosing components.
 4. Build the representative preview slice described in [Progressive delivery and approval gate](#progressive-delivery-and-approval-gate).
 5. Add the detailed background scene, single SVG filter definition, and four layers in the exact order above.
-6. Keep content and focus states above the layers and readable against the cover.
+6. Keep content and focus states above the layers, make the content layer fill the wrapper, and keep it readable against the cover.
 7. Implement only the interaction class each control needs: immediate response for discrete controls; direct manipulation, interruption, and velocity handoff only when dragging exists.
 8. Verify the preview in a real browser. In `preview` mode, stop at the approval gate; in `full` mode, record the same evidence and continue.
 9. During final expansion, repeat the material and responsive checks. For scrollable pages, capture the same glass control at two scroll positions and confirm its sampled background changes; if the rim displacement is not visible, capture and record the readable fallback before accepting the result.
