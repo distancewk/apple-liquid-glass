@@ -9,7 +9,7 @@ Use the reference implementation as the material contract. The page can have any
 
 This skill is self-contained for a new HTML/CSS/JS page: do not require another design skill to choose the page direction or implement the material. If no framework or project is supplied, use the vanilla fixture in [references/vanilla-example.md](references/vanilla-example.md) as the starting point and serve it from a local HTTP origin for browser verification.
 
-Before designing a new Apple-like page, read [references/apple-hig.md](references/apple-hig.md) and [references/hig-foundations.md](references/hig-foundations.md). They translate the current official HIG information architecture and the studied Landmarks and App Privacy examples into web decisions for hierarchy, planes, color, imagery, type, writing, iconography, accessibility, and recovery. Then load the task-specific HIG guide before choosing a pattern or component:
+Before designing a new Apple-like page, start with the routing, three-plane, and component-shape sections in [references/apple-hig.md](references/apple-hig.md), plus the use/boundary, layout/material, color/icons, and accessibility sections in [references/hig-foundations.md](references/hig-foundations.md). They translate the current official HIG information architecture and the studied Landmarks and App Privacy examples into web decisions for hierarchy, planes, color, imagery, type, writing, iconography, accessibility, and recovery. Load the remaining sections only when the page task makes them relevant, then load the task-specific HIG guide before choosing a pattern or component:
 
 - For a flow involving sign-in, search, onboarding, settings, forms, permissions, feedback, errors, help, account management, destructive actions, or undo, read [references/hig-patterns.md](references/hig-patterns.md).
 - For navigation, actions, selections, lists, collections, fields, menus, alerts, sheets, toolbars, sidebars, tabs, status, or keyboard/pointer/touch behavior, read [references/hig-components-inputs.md](references/hig-components-inputs.md).
@@ -35,7 +35,7 @@ Use [Foundations](references/hig-foundations.md) as the sole owner of foundation
 
 ### Anti-AI visual gate
 
-Reject unrequested decoration that does not clarify the task: blue-purple neon, gratuitous glow, floating ornaments, repeated pills, card walls, invented slogans, or color with no semantic job. This gate is applied in the preview audit in [references/verification.md](references/verification.md).
+Reject unrequested decoration that does not clarify the task: blue-purple neon, gratuitous glow, floating ornaments, **unjustified repeated glass pills**, card walls, invented slogans, or color with no semantic job. Separate capsules remain valid for genuinely independent horizontal actions; a contextual command group must share one vessel. This gate is applied in the preview audit in [references/verification.md](references/verification.md).
 
 ### Palette decision gate
 
@@ -57,7 +57,8 @@ Content hierarchy: primary, secondary, supporting, and action content
 Material map: each glass surface, its role, radius, weight, and background detail
 Plane map: which elements are content, standard material, and Liquid Glass controls
 Component grammar: familiar pattern/component, independent target or shared command group, outer shape, local state surface, and placement rationale
-Interaction state map: idle, hover, press, focus, drag, release, disabled
+Interaction class: discrete control or direct-manipulation control
+Interaction state map: only the applicable idle, hover, press, focus, selected, disabled, loading, error, drag, and release states
 Motion model: immediate feedback, spring/transition choice, interruption, spatial origin
 Typography: platform font, display/body scale, weight, tracking, and leading
 Accessibility: reduced motion, reduced transparency, high contrast, focus, touch targets
@@ -94,25 +95,31 @@ Keep the material contract stable while allowing the page composition to respond
 
 ## Progressive delivery and approval gate
 
-Use a two-phase workflow by default to avoid spending tokens on unapproved pages:
+Choose the delivery mode before implementation:
+
+| Mode | Use when | Stop condition |
+| --- | --- | --- |
+| `preview` (default) | The user asks to design, explore, or assess a page without explicitly requesting full completion | Build one representative slice and wait for approval or revision feedback |
+| `full` | The user explicitly asks to complete the page, implement all named screens, or proceed past preview | Build the preview-quality slice first, then continue into full implementation without a separate approval pause |
+| `iterate` | The user gives feedback on an existing preview or page | Change only the requested material, topology, layout, or behavior variable and show the revised evidence |
+
+Do not infer `full` merely because the user asks for “a page”; use `preview` until they explicitly state that they want the complete implementation. A later explicit request to continue changes the current delivery mode to `full`.
+
+Use the mode to control the two-phase workflow and avoid spending tokens on an unapproved direction:
 
 1. **Preview phase** — write the page brief, then implement one high-fidelity representative slice. It must use the final SVG filter, all four material layers, a real detailed background, one meaningful glass control, and the relevant interaction behavior; for a scrollable page, this includes scroll-through behavior. Use minimal product copy and a small amount of content; reduce quantity, never material fidelity.
-2. **Approval gate** — show the running preview or a browser screenshot and state exactly what the user should judge: translucency, changing background through the surface, rim displacement, 3D thickness, hierarchy, and interaction response. Stop implementation after the preview until the user explicitly approves or requests a revision.
-3. **Expansion phase** — after approval, extend the approved slice into the complete page and then create additional cases. Reuse the approved material contract and tokens, but choose each page's composition from its content.
+2. **Approval gate** — in `preview` mode, show the running preview or a browser screenshot and state exactly what the user should judge: translucency, changing background through the surface, rim displacement, 3D thickness, hierarchy, and interaction response. Stop there until the user explicitly approves or requests a revision. In `full` mode, capture the same evidence but continue after recording it.
+3. **Expansion phase** — after approval in `preview` mode, or immediately after recording preview evidence in `full` mode, extend the slice into the complete page and then create additional cases. Reuse the approved material contract and tokens, but choose each page's composition from its content.
 
 Treat feedback as local iteration: change only the preview's relevant material, topology, shape, or layout variable, then show the preview again. Do not generate the full page set while a material or direction decision is still unresolved. A preview is a reduced-content version of the final implementation, not a throwaway mock or a separate renderer.
 
-For each interactive surface, define the state behavior explicitly:
+First classify every interactive surface. Do not add drag physics to an ordinary button merely to satisfy a state table.
 
-| State | Required behavior |
+| Interaction class | Required states and behavior |
 | --- | --- |
-| Idle | Clear hierarchy and no gratuitous motion |
-| Hover | Small, causal affordance change only when hover exists |
-| Press | Immediate visual response on pointer-down |
-| Focus | Persistent, high-contrast keyboard indicator |
-| Drag | 1:1 tracking with pointer capture when dragging |
-| Release | Continue from the current value and hand off velocity when motion continues |
-| Reduced motion/transparency | Keep meaning and operation while reducing movement/material intensity |
+| Discrete control: button, link, field, menu item, tab | Idle; hover only when available; immediate press; persistent focus; selected/on, disabled, loading, success, or error only when the component has that state; keep its action semantic and keyboard-operable |
+| Direct-manipulation control: draggable card, slider, sheet, canvas object | All relevant discrete states, plus drag with pointer capture and 1:1 tracking; on release, continue from the presented value and hand off velocity only if momentum continues |
+| Any control under accessibility preferences | Keep meaning and operation while reducing motion or material intensity; never make a gesture, color, or hover state the only route |
 
 ## Default material contract
 
@@ -154,6 +161,16 @@ The refractive principle is pixel displacement, not blur alone. `feDisplacementM
 Use one reference mode: preserve the exact `shuding/liquid-glass` declaration, including `<feDisplacementMap scale="200" />`. A declared filter is not proof of visible refraction. Do not relabel the default `SourceGraphic` inputs as a repair, and do not introduce a second displacement-map design to force an effect in a browser where the reference does not render visibly.
 
 If browser evidence shows no readable rim displacement, record the engine and select the readable fallback state described below. The reference material remains the only normal renderer; the fallback communicates the same hierarchy without making a false refraction claim.
+
+## Browser capability preflight
+
+Before building the preview, test the exact reference fixture in the target browser or the closest available target engine, over a detailed contrasting scene. Record:
+
+```text
+engine and version → viewport → reference rim visibly displaced? → selected mode: reference | fallback
+```
+
+`CSS.supports`, a parsed `backdrop-filter` declaration, and a nonempty computed style prove syntax only. They do not prove that the browser renders the reference filter or the mask composite visibly. If the rim is not readable, select `data-glass-mode="fallback"` before composing the page, keep the same component topology and four-layer DOM, and describe the result as a readable translucent fallback rather than refraction. If a testing tool cannot emulate a user preference, record that gap instead of claiming the preference was verified.
 
 ## Required wrapper structure
 
@@ -293,14 +310,14 @@ Make translucency observable in a real product flow, not only in an isolated mat
 
 ## Design-to-material sequence
 
-1. Inspect the target page, framework, browser target, and existing interaction model.
-2. Write the page brief before choosing components.
-3. Build only the representative preview slice described in [Progressive delivery and approval gate](#progressive-delivery-and-approval-gate).
-4. Add the detailed background scene, single SVG filter definition, and four layers in the exact order above.
-5. Keep content and focus states above the layers and readable against the cover.
-6. Implement interaction outside the material layers: immediate feedback, direct manipulation, interruptible motion, and spatially consistent transitions.
-7. Add the fallback and verify the preview in a real browser.
-8. Stop at the approval gate. Expand to the full page only after explicit approval; otherwise revise the smallest relevant slice and repeat the preview check.
+1. Inspect the target page, framework, browser target, existing interaction model, and delivery mode.
+2. Run the browser capability preflight and select reference or fallback mode before composition.
+3. Write the page brief before choosing components.
+4. Build the representative preview slice described in [Progressive delivery and approval gate](#progressive-delivery-and-approval-gate).
+5. Add the detailed background scene, single SVG filter definition, and four layers in the exact order above.
+6. Keep content and focus states above the layers and readable against the cover.
+7. Implement only the interaction class each control needs: immediate response for discrete controls; direct manipulation, interruption, and velocity handoff only when dragging exists.
+8. Verify the preview in a real browser. In `preview` mode, stop at the approval gate; in `full` mode, record the same evidence and continue.
 9. During final expansion, repeat the material and responsive checks. For scrollable pages, capture the same glass control at two scroll positions and confirm its sampled background changes; if the rim displacement is not visible, capture and record the readable fallback before accepting the result.
 
 ## Single-effect rule
@@ -363,9 +380,9 @@ Before handoff, verify all of the following in a real browser:
 
 ### Delivery state
 
-- If the user has not explicitly approved the preview, only the representative slice has been generated.
+- The selected delivery mode is recorded. If it is `preview`, only the representative slice has been generated until the user approves; if it is `full`, the explicit request to complete is recorded.
 - The preview uses the same SVG filter, four-layer DOM, mask strategy, fallback, and interaction model intended for the final page.
-- Full-page expansion and additional cases were started only after approval or an explicit request to proceed.
+- Full-page expansion and additional cases were started only after preview approval or an explicit `full` request.
 
 ### Design acceptance
 
@@ -380,6 +397,7 @@ Before handoff, verify all of the following in a real browser:
 
 - The background remains visible through the wrapper and contains enough detail to reveal the rim.
 - The backdrop topology is valid: the intended scene is below the surface, the surface is partially transparent, and no ancestor blocks sampling.
+- The selected reference/fallback mode is backed by target-browser visual evidence, not only by CSS support or computed-style output.
 - The DOM contains one shared `#liquid_glass_filter` and four layer nodes per glass wrapper.
 - Computed style for `liquid_glass-outer` contains `url(#liquid_glass_filter)`.
 - `liquid_glass-cover` uses `rgba(0, 0, 0, 0.12)` and `blur(2px)`.

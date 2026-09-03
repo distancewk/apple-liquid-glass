@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the apple-liquid-glass skill without third-party Python packages."""
+"""Validate the apple-liquid-glass structural contract without third-party packages."""
 
 from __future__ import annotations
 
@@ -116,6 +116,7 @@ def validate(skill_dir: Path) -> None:
         "## Apple HIG visual grammar",
         "## Page phase: purpose + behavior",
         "## SVG displacement fundamentals",
+        "## Browser capability preflight",
         "## Transparency as the default behavior",
         "## Progressive delivery and approval gate",
         "## Default material contract",
@@ -211,7 +212,7 @@ def main() -> int:
     except ValueError as error:
         print(f"invalid: {error}")
         return 1
-    print("valid: apple-liquid-glass skill passed dependency-free validation")
+    print("valid: apple-liquid-glass structural contract passed dependency-free validation")
     return 0
 
 

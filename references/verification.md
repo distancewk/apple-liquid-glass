@@ -3,6 +3,7 @@
 ## Contents
 
 - [Static checks](#static-checks)
+- [Browser capability preflight](#browser-capability-preflight)
 - [Preview gate](#preview-gate)
 - [DOM and CSS checks](#dom-and-css-checks)
 - [Browser checks](#browser-checks)
@@ -10,6 +11,8 @@
 - [Evidence](#evidence)
 
 ## Static checks
+
+Static checks prove that the reusable contract is present. They do **not** prove that a target browser rendered refraction, that background changes are visible, or that a produced page follows the component grammar. Treat this as Level 1 only.
 
 Run the dependency-free validator from the skill directory:
 
@@ -22,15 +25,25 @@ python3 scripts/extract_html_example.py \
 
 Run the project's type check and build when the page is part of a project. The extracted fixture must contain the four real layer classes and the SVG filter definition.
 
-The bundled fixture is also a scroll test. The dependency-free validator must reject it if it loses its long page, `overflow-y: auto`, sticky glass control, real button, or reduced-transparency fallback. Static checks prove the contract is present; they do not prove that the browser applied the filter.
+The bundled fixture is also a scroll test. The dependency-free validator must reject it if it loses its long page, `overflow-y: auto`, sticky glass control, real button, or reduced-transparency fallback.
+
+## Browser capability preflight
+
+Before designing the page, serve the unchanged fixture from a local HTTP origin in the target browser or closest target engine. Place it over the supplied detailed scene and record:
+
+```text
+engine/version · viewport · outer filter declaration · visible rim displacement · selected mode (reference/fallback)
+```
+
+Use the browser screenshot to decide the selected mode. A successful `CSS.supports` query or computed `backdropFilter` value is structural evidence only. If the reference rim is not visually readable, set `data-glass-mode="fallback"` before page composition and retain evidence of the readable fallback.
 
 ## Preview gate
 
-Before generating a full page or a set of cases, verify one representative slice in a browser. The slice must be structurally identical to the intended final implementation and must demonstrate the detailed background, four material layers, translucent control, rim displacement, and at least one interaction state. For a scrollable page, it must also demonstrate scroll-through color change. For a non-scrollable page, verify translucency and resting-state legibility against its meaningful static scene; do not add synthetic scrolling solely for this test. Keep copy and content count small.
+Record the selected delivery mode before generating: `preview` is the default; `full` requires an explicit user request to complete the page or all named screens; `iterate` revises only an existing preview or page. In every mode, verify one representative slice in a browser. The slice must be structurally identical to the intended final implementation and must demonstrate the detailed background, four material layers, translucent control, the preflight-selected material mode, and at least one applicable interaction state. For a scrollable page, it must also demonstrate scroll-through color change. For a non-scrollable page, verify translucency and resting-state legibility against its meaningful static scene; do not add synthetic scrolling solely for this test. Keep copy and content count small.
 
-Show the preview or its screenshot and ask the user to judge the material and direction. Stop there until the user explicitly approves or requests a revision. When revising, change only the relevant variable and repeat the preview. Do not treat silence, a local build pass, or an internal visual check as approval to expand.
+In `preview` mode, show the preview or its screenshot and ask the user to judge the material and direction. Stop there until the user explicitly approves or requests a revision. In `full` mode, record the same evidence and continue; in `iterate` mode, change only the relevant variable and repeat the preview. Do not treat silence, a local build pass, or an internal visual check as approval to expand.
 
-After approval, reuse the approved material contract and expand the page; then create additional cases with content-specific compositions. Record the approval or revision decision with the browser evidence.
+After approval in `preview` mode — or directly in `full` mode — reuse the preview material contract and expand the page; then create additional cases with content-specific compositions. Record the selected mode, approval/revision decision when applicable, and browser evidence.
 
 Resolve preview conflicts in this order: accessibility and operability, explicit product or brand direction, the liquid-glass material contract, the Apple visual baseline, then the Anti-AI defaults. Explicit visual direction may override the aesthetic defaults, but never the material or accessibility requirements.
 
@@ -101,7 +114,7 @@ Run this review after the complete page is implemented and after the last visual
 - Account, permission, payment, sensitive-data, automated, destructive, and failure paths clearly explain what will happen, retain user control, and offer the relevant cancellation, correction, retry, or undo path.
 - Typography, contrast, focus, press feedback, touch targets, and non-color status cues remain usable.
 - Light/dark appearance, high contrast, forced colors, reduced transparency, reduced motion, small screens, long text, locale, and RTL remain usable.
-- The anti-AI visual gate passes: no unrequested neon, gratuitous glow/gradient, floating ornament, repeated pill, rounded-card wall, or invented futuristic label.
+- The anti-AI visual gate passes: no unrequested neon, gratuitous glow/gradient, floating ornament, unjustified repeated glass pill, rounded-card wall, or invented futuristic label. Separate pills remain acceptable for truly independent peer actions.
 
 If any item fails, fix the smallest relevant variable, repeat the browser and screenshot checks, and update the record. Explicit product or brand direction may override the Apple visual defaults only when it remains accessible and preserves the material contract.
 
@@ -136,14 +149,14 @@ Check the behavior that makes the material readable:
 
 ## Browser checks
 
-Use Playwright CLI or the project's existing browser tool from a local HTTP origin:
+This is Level 2: observable behavior. Use Playwright CLI or the project's existing browser tool from a local HTTP origin. Do not report the page verified if only Level 1 ran:
 
 1. Load the page and confirm there are no console errors.
 2. Capture a desktop screenshot with a detailed background behind the wrapper.
 3. Resize to the smallest supported viewport and capture a mobile screenshot.
 4. Hover, focus, activate, and keyboard-tab through interactive glass controls.
 5. Click any product interaction and confirm it changes state without removing or reordering the four layers.
-6. Emulate reduced motion, reduced transparency, and high contrast; confirm content remains operable.
+6. Emulate reduced motion, reduced transparency, and high contrast when the selected tool supports each preference; confirm content remains operable. If a preference cannot be emulated, record it as unverified rather than passing it by assumption.
 7. Disable or bypass SVG-backed `backdrop-filter` and confirm the solid/translucent fallback remains readable.
 8. On the scroll fixture, capture the same sticky control at scroll positions `0` and a later position where a different color block is behind it. Compare a central sample and an edge sample; both must change enough to show that content passes behind the control, while the control's text remains stable.
 9. If the edge does not show spatial displacement in reference mode, set `data-glass-mode="fallback"`, capture the readable fallback, and record the browser engine and evidence.
