@@ -44,6 +44,17 @@ For every non-neutral color, record `role → token → light/dark/contrast beha
 
 After identifying the page’s purpose and likely controls, classify the task with the routing table in [references/apple-hig.md](references/apple-hig.md), then read each applicable guide before the page brief is finalized. Use semantic HTML and browser-accessible controls to express HIG intent; do not claim literal native-platform behavior or imitate unavailable system surfaces.
 
+## Universal frontend layout contract
+
+Apply these rules to every page before styling Apple details or glass:
+
+- Establish the page container, columns, gaps, and readable max-width first. Keep the title, content, and controls aligned to the same container edges.
+- A control belongs to the content region it operates on. A fixed or floating toolbar, composer, or action bar must align with that region’s bounds; do not center it against the viewport when it would cross a sibling column or unrelated layout.
+- Use the owning column’s width and alignment as the source of truth. If a fixed surface cannot inherit that context, derive its offsets from the same container math at each responsive breakpoint and verify its bounding box.
+- Do not allow a component to be wider than the content it controls merely because the glass background can fill the space. Empty material and cross-column overlap are layout failures, not Apple-style whitespace.
+- Prefer normal flow, grid, flex, or a context-owned sticky surface. Use fixed positioning only when the control genuinely persists relative to the viewport and its owning region remains clear.
+- After the layout is stable, check overflow, text wrapping, 44px targets, and narrow-view collapse. Visual polish never repairs an incorrect coordinate system.
+
 ## Page phase: purpose + behavior
 
 Before writing markup or CSS, produce the following page brief: define the product purpose, information hierarchy, background scene, interaction behavior, typography, and accessibility. Keep the page-specific style independent from the material implementation.

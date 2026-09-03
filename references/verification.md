@@ -73,6 +73,7 @@ Also assert:
 - the reference filter is defined once before wrappers;
 - the intended background is not hidden behind an opaque wrapper or ancestor;
 - the selected shape profile has a matching inner mask; do not use the rounded-reference mask for a pill or circle;
+- fixed or floating controls align to the bounds of the content region they operate on and do not cross unrelated sibling columns;
 
 ## Design acceptance
 
@@ -89,6 +90,7 @@ Before checking CSS, confirm the page has:
 - Apple-style color roles are used consistently: neutral system-like surfaces and labels, a restrained app tint, status colors only for status, and scene colors kept separate from interface accents;
 - glass reserved for functional hierarchy rather than applied indiscriminately to every module.
 - content and controls are visibly separated, with structural glass used only to carry or organize a functional layer, never as content decoration; unexplained empty space inside a toolbar or composer is a layout failure;
+- the layout contract passes: every persistent control is anchored to its owning container, with no unexplained cross-column overlap or viewport-centering error;
 - the first/resting view remains readable before any scrolling or interaction changes the backdrop;
 - custom colors have light, dark, and increased-contrast behavior, and no state relies on color alone;
 - custom buttons provide a visible press state and touch targets are at least 44 CSS px where touch input is expected;
